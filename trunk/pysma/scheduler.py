@@ -5,7 +5,7 @@ It is the class of an agent which schedules other agents.
 @author Damien Boucard
 """
 from agent import Agent
-import thread
+import thread, time
 
 class Scheduler(Agent):
     def __init__(self):
@@ -15,7 +15,9 @@ class Scheduler(Agent):
         
     def born(self):
         self.__alive = True
-        thread.start_new_thread(self.schedule)
+        for act in self.activators:
+            act.kernel = self.kernel
+        thread.start_new_thread(self.schedule, ())
         
     def die(self):
         self.__alive = False
@@ -27,12 +29,12 @@ class Scheduler(Agent):
     def live(self):
         pass
         
-class Activator:
+class Activator(object):
     """
     It is the class used by a scheduler to activate other agents.
     @author Damien Boucard
     """
-    def __init__(self, group=None, role=None):
+    def __init__(self, role=None, group=None):
         self.__group = group
         self.__role = role
         self.kernel = None
@@ -46,14 +48,16 @@ class Activator:
     role = property(getRole)
     
     def getAgents(self):
-        if kernel!=None:
-            return self.kernel.getAgentsWith(self.__group, self.__role)
+        if self.kernel!=None:
+            return self.kernel.getAgentsWith(self.__role, self.__group)
         return []
     agents = property(getAgents)
     
     def activate(self):
-        for id in agents:
+        for id in self.agents:
+            #print id
             agent = self.kernel.getAgent(id)
+            #print agent
             if agent != None:
                 agent.live()
                 
@@ -62,5 +66,10 @@ class DummyScheduler(Scheduler):
         Scheduler.__init__(self)
         self.activators.append(Activator())
         
-    def live():
+    def born(self):
+        self.leaveRole(None)
+        Scheduler.born(self)
+        
+    def live(self):
         self.activators[0].activate()
+        time.sleep(1)

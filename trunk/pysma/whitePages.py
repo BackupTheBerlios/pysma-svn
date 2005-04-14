@@ -22,11 +22,11 @@ class WhitePages(object):
             
     def unregister(self, agentId):
         if agentId in self.__directory:
-            agent = self.__directory.pop(agentId)
+            agent = self.__directory.pop(agentId)["agent"]
             del self.__reverse[agent]
                 
     def getAgent(self, id):
-        return self.__directory.get(id, None)
+        return self.__directory.get(id, {"agent":None})["agent"]
         
     def getId(self, agent):
         return self.__reverse.get(agent, None)

@@ -4,8 +4,8 @@ Kernel module
 It is the core of the multi-agent system.
 @author Damien Boucard
 """
-from messageManager import MessageManager
 from whitePages import WhitePages
+from message import Message
 
 class Kernel(object):
     instance = None
@@ -19,13 +19,19 @@ class Kernel(object):
         self.__groups = {}
         self.__roles = {}
         
+    def stopKernel(self):
+        Kernel.instance = None
+        for agt in self.__agents:
+            self.removeAgent(self.getAgentId(agt))
+        
     # AGENT MANAGEMENT
-    def addAgent(self, agent, name, parent):
+    def addAgent(self, agent, name="unamed", parent=None):
         id = Kernel.__agentCounter
         Kernel.__agentCounter = id + 1
         self.__wPages.register(id, agent, name, parent)
         self.__agents.append(agent)
         self.__roles[id] = []
+        self.requestRole(id)
         agent.kernel = self
         agent.born()
         
@@ -41,7 +47,10 @@ class Kernel(object):
         
     def getAgentId(self, agent):
         return self.__wPages.getId(agent)
-        
+    
+    def getAgent(self, agentId):
+        return self.__wPages.getAgent(agentId)
+    
     def getAgentNb(self):
         return len(self.__agents)
         
@@ -60,7 +69,7 @@ class Kernel(object):
                 agent.receiveMessage(msg)
         
     # ORGANIZATION MANAGEMENT
-    def requestRole(self, agentId, group=None, role=None):
+    def requestRole(self, agentId, role=None, group=None):
         if group in self.__groups:
             if role in self.__groups[group]:
                 self.__groups[group][role].append(agentId)
@@ -70,7 +79,7 @@ class Kernel(object):
             self.__groups[group] = {role: [agentId,]}
         self.__roles[agentId].append((group, role))
     
-    def leaveRole(self, agentId, group=None, role=None):
+    def leaveRole(self, agentId, role=None, group=None):
         if group in self.__groups:
             if role in self.__groups[group]:
                 self.__groups[group][role].remove(agentId)
@@ -107,5 +116,5 @@ class Kernel(object):
             agents.extend(roles[role])
         return agents
         
-    def getAgentsWith(self, group=None, role=None):
+    def getAgentsWith(self, role=None, group=None):
         return self.__groups[group][role][:]

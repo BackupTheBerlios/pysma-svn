@@ -15,6 +15,9 @@ class Agent(object):
         return self.kernel.getAgentId(self)
     id = property(getId)
         
+    def printMsgbox(self):
+        print self.__msgbox
+        
     # ABSTRACT METHODS
     def born(self):
         pass
@@ -32,7 +35,7 @@ class Agent(object):
             return self.kernel.sendMessage(msg)
         return False
     
-    def sendBroadcastMessage(self, content, group=None, role=None):
+    def sendBroadcastMessage(self, content, role=None, group=None):
         msg = Message(self.id, (group,role), content)
         self.kernel.sendBroadcastMessage(msg)
     
@@ -41,7 +44,7 @@ class Agent(object):
     
     def getNextMessage(self):
         if self.kernel != None:
-            return self.__msgBox.pop[0]
+            return self.__msgbox.pop(0)
         return None
         
     def hasMessage(self):
@@ -50,8 +53,8 @@ class Agent(object):
         return False
 
     # ORGANISATION MANAGEMENT
-    def requestRole(self, group=None, role=None):
-        self.kernel.requestRole(self.id, group, role)
+    def requestRole(self, role, group=None):
+        self.kernel.requestRole(self.id, role, group)
         
-    def leaveRole(self, group=None, role=None):
-        self.kernel.leaveRole(self.id, group, role)
+    def leaveRole(self, role, group=None):
+        self.kernel.leaveRole(self.id, role, group)
