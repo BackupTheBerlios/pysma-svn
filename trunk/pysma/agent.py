@@ -18,6 +18,10 @@ class Agent(object):
     def printMsgbox(self):
         print self.__msgbox
         
+    def addAgent(self, agent, name="unamed"):
+        if self.kernel != None:
+            return self.kernel.addAgent(agent, name, self)
+        
     # ABSTRACT METHODS
     def born(self):
         pass
