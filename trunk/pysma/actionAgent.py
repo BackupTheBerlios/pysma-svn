@@ -36,7 +36,7 @@ class ActionAgent(Agent):
     # (until a NotHandledError is raised)
     def processAllMessages(self):
         while self.hasMessage():
-            self.processNextMessage(self)
+            self.processNextMessage()
        
    # Lanch message processing for all waiting messages
    # (even if raised, don't manage NotHandledError)     
