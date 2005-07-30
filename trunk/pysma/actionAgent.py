@@ -10,6 +10,8 @@ class ActionAgent(Agent):
     def __init__(self, prefix="evt", silent=False):
         Agent.__init__(self)
         self.prefix = prefix
+        self.currentMessage = None
+        self.trashbox = []
         if silent:
             self.liveFct = self.silentlyProcessAllMessages
         else:
@@ -30,7 +32,17 @@ class ActionAgent(Agent):
     def processNextMessage(self):
         msg = self.getNextMessage()
         if msg != None:
-            self.processMessage(msg.content)
+            if not isinstance(msg.content, ActionMessage):
+                # Keep non-ActionMessages
+                self.trashbox.append(msg)
+                return
+            self.currentMessage = msg
+            try:
+                self.processMessage(msg.content)
+                self.currentMessage = None
+            except:
+                self.currentMessage = None
+                raise
         
     # Lanch message processing for all waiting messages
     # (until a NotHandledError is raised)
@@ -47,13 +59,17 @@ class ActionAgent(Agent):
             self.silentlyProcessAllMessages()
 
     def live(self):
+        self.trashbox = []
         self.liveFct()
     
 class ActionMessage:
-    def __init__(action, arg, kw):
+    def __init__(self, action, arg, kw={}):
         self.action = action
         self.arg = arg
         self.kw = kw
+    
+    def __str__(self):
+        return "<pysma.actionAgent.ActionMessage %s(*%s, **%s)>" %(self.action, self.arg, self.kw)
                 
     
 class NotHandledError(AttributeError):

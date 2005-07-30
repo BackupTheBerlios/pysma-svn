@@ -62,9 +62,10 @@ class Activator(object):
                 agent.live()
                 
 class DummyScheduler(Scheduler):
-    def __init__(self):
+    def __init__(self, sleep=1):
         Scheduler.__init__(self)
         self.activators.append(Activator())
+        self.sleep_duration = sleep
         
     def born(self):
         self.leaveRole(None)
@@ -72,4 +73,4 @@ class DummyScheduler(Scheduler):
         
     def live(self):
         self.activators[0].activate()
-        time.sleep(1)
+        time.sleep(self.sleep_duration)

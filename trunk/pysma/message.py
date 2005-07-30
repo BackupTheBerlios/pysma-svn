@@ -22,3 +22,6 @@ class Message(object):
     def getContent(self):
         return self.__content
     content = property(getContent)
+    
+    def __str__(self):
+        return "<pysma.message.Message sender=%s, receiver=%s, content=%s>" %(self.sender, self.receiver, self.content)

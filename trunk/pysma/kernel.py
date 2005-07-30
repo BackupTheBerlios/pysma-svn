@@ -100,21 +100,21 @@ class Kernel(object):
         return self.__groups.keys()
         
     def getRoles(self, group=None):
-        return self.__groups[group].keys()
+        return self.__groups.get(group, {}).keys()
         
     def getRolesOf(self, agentId, group=None):
         roles = []
-        for grp, rol in self.__roles[agentId]:
+        for grp, rol in self.__roles.get(agentId, ()):
             if grp == group:
                 roles.append(rol)
         return roles
         
     def getAgentsIn(self, group=None):
         agents = []
-        roles = self.__groups[group]
+        roles = self.__groups.get(group, {})
         for role in roles:
             agents.extend(roles[role])
         return agents
         
     def getAgentsWith(self, role=None, group=None):
-        return self.__groups[group][role][:]
+        return self.__groups.get(group, {}).get(role, ())[:]
