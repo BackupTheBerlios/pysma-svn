@@ -1,14 +1,14 @@
 """
 World mesh agent for the prey/predator game.
 """
-from pysma import agent
+from pysma import Agent, Message
 import random
 
 random.seed()
 
-class Mesh(agent.Agent):
+class Mesh(Agent):
     def __init__(self, width, height):
-        agent.Agent.__init__(self)
+        Agent.__init__(self)
         self.__width = width
         self.__height = height
         self.__world = [[None] * height for i in range(width)]
@@ -25,7 +25,6 @@ class Mesh(agent.Agent):
         self.requestRole(role="mover")
         
     def live(self):
-        #self.printMsgbox()
         while self.hasMessage():
             msg = self.getNextMessage()
             if msg != None:
@@ -50,7 +49,7 @@ class Mesh(agent.Agent):
                             self.__world[newX][newY] = msg.sender
                             self.__world[x][y] = None
                         else:
-                            self.sendMessage(msg.sender, "NOT MOVED%s" %self.__world[newX][newY])
+                            self.sendMessage(Message("NOT MOVED%s" %self.__world[newX][newY]), msg.sender)
         self.displayState_text()
         
     def displayState_text(self):

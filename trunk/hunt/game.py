@@ -1,16 +1,16 @@
 """
-Game of the prey and the predator using PySMA
+Game of the prey and the predator using PySMA.
 """
-from pysma import kernel, scheduler
+from pysma import Kernel, DummyScheduler
 from mesh import Mesh
 from prey import Prey
 from predator import Predator
-import sys, time, threading
+import sys, time
 
 def main(WIDTH=21, HEIGHT=10, PREDATORS=8):
-    mygame = kernel.Kernel()
+    mygame = Kernel()
     
-    myscheduler = scheduler.DummyScheduler()
+    myscheduler = DummyScheduler()
     mygame.addAgent(myscheduler, "Scheduler")
     
     mymesh = Mesh(WIDTH, HEIGHT)
@@ -25,7 +25,7 @@ def main(WIDTH=21, HEIGHT=10, PREDATORS=8):
         mygame.addAgent(anAgent, "Predator%s"%i)
         mymesh.addAgent(mygame.getAgentId(anAgent))
         
-    while (kernel.Kernel.instance != None):
+    while (Kernel.instance != None):
         time.sleep(3)
 
 if __name__ == "__main__":

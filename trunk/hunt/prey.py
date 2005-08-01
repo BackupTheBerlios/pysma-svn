@@ -2,7 +2,6 @@
 Prey agent of the prey/predator game.
 """
 from movableAgent import MovableAgent
-from pysma import kernel
 import random
 
 random.seed()
