@@ -50,7 +50,7 @@ class Agent(object):
         pass
         
     # MESSAGE MANAGEMENT
-    def sendMessage(self, receiver, message):
+    def sendMessage(self, message, receiver):
         """ Sends a message to another agent.
         @param receiver: ID of the agent who will receive the message.
         @type receiver: C{int}
