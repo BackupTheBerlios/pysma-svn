@@ -1,0 +1,23 @@
+===============================
+o    |\      /  |\/|   /\     o
+o o  |/  \/  \  |  |  |__|  o o
+o    |   /   /  |  |  |  |    o
+===============================
+     INSTALLATION MANUAL
+===============================
+
+== Requirements ==
+ - Python : version 2.2 or early (tested until 2.4)
+
+
+== User-mode installation ==
+ - You just have to define or redefine your PYTHONPATH environment variable
+by including the path to the 'pysma' subdirectory into.
+
+
+== Root-mode installation ==
+ - You can properly install PySMA by copying the 'pysma' subdirectory into
+/usr/lib/site-python/pysma or the equivalent in your system.
+ - Like this, you will not have to define the $PYTHONPATH environment variable
+before running the Hunt demo (for example). An automatic installer is in
+preparation.
