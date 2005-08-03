@@ -40,7 +40,8 @@ class WhitePages(object):
         @type agentId: C{int}
         """
         if agentId in self.__directory:
-            agent = self.__directory.pop(agentId)["agent"]
+            agent = self.__directory[agentId]["agent"]
+            del self.__directory[agentId]
             del self.__reverse[agent]
                 
     def getAgent(self, id):
