@@ -35,3 +35,13 @@ class Message(object):
         @rtype: C{str}
         """
         return "<pysma.message.Message sender=%s receiver=%s content=%s>" %(self.sender, self.receiver, self.content)
+        
+    def __copy__(self):
+        """ Makes a shallow copy of the message.
+        @return: The copy.
+        @rtype: C{L{Message}}
+        """
+        msg = Message(self.__content)
+        msg.sender = self.sender
+        msg.receiver = self.receiver
+        return msg

@@ -118,8 +118,8 @@ class Kernel(object):
         if group in self.__groups and role in self.__groups[group]:
             for id in self.__groups[group][role]:
                 agent = self.__wPages.getAgent(id)
-                msg = Message(message.content)
-                msg.sender, msg.receiver = (message.sender, id)
+                msg = message.__copy__()
+                msg.receiver = id
                 agent.receiveMessage(msg)
         
     # ORGANIZATION MANAGEMENT

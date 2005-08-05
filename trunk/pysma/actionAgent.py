@@ -72,13 +72,14 @@ class ActionAgent(Agent):
         while self.hasMessage():
             self.processActionMessage(self.getNextMessage())
        
-    def __default_handler(message):
+    def __default_handler(self, message):
         """ The default function for the default handler. If the C{default} L{constructor<__init__>} parameter is not implememented, this function will be used.
         @param message: The message which cannot be handled.
         @type message: C{L{ActionMessage} or L{Message}}
         @raise UnhandledActionError: if C{L{silent}} is C{False} and the message is an C{L{ActionMessage}} instance.
         """
-        if not silent and isinstance(message, ActionMessage):
+        print "Unhandled message: %s, %s" %(type(self), message)
+        if not self.silent and isinstance(message, ActionMessage):
             raise UnhandledActionError(message)
 
     def live(self):
@@ -131,7 +132,12 @@ class ActionMessage(Message):
     
     def __str__(self):
         return "<pysma.actionAgent.ActionMessage sender=%s receiver=%s content=%s(*%s, **%s)>" %(self.sender, self.receiver, self.action, self.arg, self.kw)
-                
+    
+    def __copy__(self):
+        msg = ActionMessage(self.action, self.arg, self.kw)
+        msg.sender = self.sender
+        msg.receiver = self.receiver
+        return msg
     
 class UnhandledActionError(AttributeError):
     """ Error raised when an action message cannot be handled, except if C{L{silent<ActionAgent.silent>}} flag is C{True}. """
