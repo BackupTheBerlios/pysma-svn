@@ -37,6 +37,8 @@ class ActionAgent(Agent):
         self.pattern = prefix + "%s" + suffix
         if hasattr(self, default):
             self.__defaultHandler = getattr(self, default)
+        else:
+            self.__defautlHandler = self.__default_handler
         self.silent = silent
         self.currentMessage = None
     
@@ -62,7 +64,7 @@ class ActionAgent(Agent):
                         self.currentMessage = None
                         raise
                     return
-        self.__default_handler(msg)        
+        self.__defaultHandler(msg)        
         
     # Lanch message processing for all waiting messages
     def processAllMessages(self):
