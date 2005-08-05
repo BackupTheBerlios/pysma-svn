@@ -101,7 +101,7 @@ class ActionMessage(Message):
         @param kw: Keywords (optional arguments) attached to the action (Empty dictionnary (C{E{lb}E{rb}}) for none).
         @type kw: C{dict}
         """
-        Message.__init__((action, arg, kw))
+        Message.__init__(self, (action, arg, kw))
         
     def __getAction(self):
         """ C{L{action}} property getter.
